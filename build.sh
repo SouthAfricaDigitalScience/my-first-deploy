@@ -25,7 +25,7 @@ SOURCE_FILE=${NAME}-${VERSION}.tar.bz2
 #          - the directory relative to which the application will be installed
 # REPO_DIR /data/repo/$::env(SITE)/$::env(OS)/$::env(ARCH)/$::env(NAME)/$::env(VERSION)
 #          - a directory to store build artifacts in.
-# SRC_DIR                /repo/src/$::env(NAME)/$::env(VERSION)
+# SRC_DIR                /data/src/$::env(NAME)/$::env(VERSION)
 
 
 module load ci
@@ -64,7 +64,7 @@ else
 fi
 
 # now unpack it into the workspace - be sure to skip old files un case the tarball has already been unpacked.
-tar -xzj ${SRC_DIR}/${SOURCE_FILE} -C ${WORKSPACE} --skip-old-files
+tar -xfj ${SRC_DIR}/${SOURCE_FILE} -C ${WORKSPACE} --skip-old-files
 
 #  generally tarballs will unpack into the NAME-VERSION directory structure. If this is not the case for your application
 #  ie, if it unpacks into a different default directory, either use the relevant tar commands, or change
