@@ -14,16 +14,16 @@
 # Be careful of capitalisation and semantic versioning differences
 # E.g. ApplicationName-v.1.2.3 is different from application-name-1.2.3 and so on.
 
-SOURCE_FILE=${NAME}-${VERSION}.tar.gz
+SOURCE_FILE=${NAME}-${VERSION}.tar.bz2
 
 # We provide the base module which all jobs need to get their environment on the build slaves
 # this module provides certain environment variables which are needed to configure the job's
 # build environment and directories, as well as targets.
 # You get
-# MODULES /repo/modules - the directory where other modules are
-# SOFT_DIR /apprepo/$::env(SITE)/$::env(OS)/$::env(ARCH)/$::env(NAME)/$::env(VERSION)
+# MODULES /data/modules - the directory where other modules are
+# SOFT_DIR /data/soft/$::env(SITE)/$::env(OS)/$::env(ARCH)/$::env(NAME)/$::env(VERSION)
 #          - the directory relative to which the application will be installed
-# REPO_DIR /repo/$::env(SITE)/$::env(OS)/$::env(ARCH)/$::env(NAME)/$::env(VERSION)
+# REPO_DIR /data/repo/$::env(SITE)/$::env(OS)/$::env(ARCH)/$::env(NAME)/$::env(VERSION)
 #          - a directory to store build artifacts in.
 # SRC_DIR                /repo/src/$::env(NAME)/$::env(VERSION)
 
@@ -45,13 +45,12 @@ mkdir -p ${SOFT_DIR}
 # place a lock on the download to the SRC directory and wait until it's released if Someone
 # else is doing it.
 
-
 # We will use GMP - the GNU Multiprecision library as an example
 if [ ! -e ${SRC_DIR}/${SOURCE_FILE}.lock ] && [ ! -s ${SRC_DIR}/${SOURCE_FILE} ] ; then
   touch  ${SRC_DIR}/${SOURCE_FILE}.lock
   echo "seems like this is the first build - let's get the source"
 # use local mirrors if you can. Remember - UFS has to pay for the bandwidth!
-  wget http://mirror.ufs.ac.za/gnu/gnu/gmp/${SOURCE_FILE} -O ${SRC_DIR}/${SOURCE_FILE}
+  wget https://gmplib.org/download/gmp/${SOURCE_FILE} -O ${SRC_DIR}/${SOURCE_FILE}
   echo "releasing lock"
   rm -v ${SRC_DIR}/${SOURCE_FILE}.lock
 elif [ -e ${SRC_DIR}/${SOURCE_FILE}.lock ] ; then
@@ -61,12 +60,11 @@ elif [ -e ${SRC_DIR}/${SOURCE_FILE}.lock ] ; then
     sleep 5
   done
 else
-else
   echo "continuing from previous builds, using source at " ${SRC_DIR}/${SOURCE_FILE}
 fi
 
 # now unpack it into the workspace - be sure to skip old files un case the tarball has already been unpacked.
-tar -xzf ${SRC_DIR}/${SOURCE_FILE} -C ${{WORKSPACE} --skip-old-files
+tar -xzj ${SRC_DIR}/${SOURCE_FILE} -C ${{WORKSPACE} --skip-old-files
 
 #  generally tarballs will unpack into the NAME-VERSION directory structure. If this is not the case for your application
 #  ie, if it unpacks into a different default directory, either use the relevant tar commands, or change
