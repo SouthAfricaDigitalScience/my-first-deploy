@@ -13,7 +13,7 @@
 # NAME and VERSION variables defined in the Jenkins job to get the right package for you.
 # Be careful of capitalisation and semantic versioning differences
 # E.g. ApplicationName-v.1.2.3 is different from application-name-1.2.3 and so on.
-
+. /etc/profile.d/modules.sh
 SOURCE_FILE=${NAME}-${VERSION}.tar.bz2
 
 # We provide the base module which all jobs need to get their environment on the build slaves
