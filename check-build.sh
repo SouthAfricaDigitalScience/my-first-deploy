@@ -12,7 +12,7 @@
 # good idea to try to execute the program itself with a trivial use case.
 
 # you need the CI module to set up your environment.
-
+. /etc/profile.d/modules.sh
 module add ci
 
 # we need to run make check in the build directory - it's still there from the previous step, since we're in the same job.
