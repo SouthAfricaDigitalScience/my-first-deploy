@@ -33,12 +33,12 @@ module load ci
 # This may not be the first build, so you need to perform this check.
 
 # Workspace is the "home" directory of the jenkins job into which the project itself will be created and built.
-mkdir -p ${WORKSPACE}
+mkdir -vp ${WORKSPACE}
 # SRC_DIR is the local directory to which all of the source code tarballs are downloaded. We cache them locally.
-mkdir -p ${SRC_DIR}
+mkdir -vp ${SRC_DIR}
 # SOFT_DIR is the directory into which the application will be "installed" in the integration phase.
 # installation to the /cvmfs target takes place later in the build flow.
-mkdir -p ${SOFT_DIR}
+mkdir -vp ${SOFT_DIR}
 
 #  Download the source file if it's not available locally.
 # note that there may be parallel downloads, which is not great, so we need to
